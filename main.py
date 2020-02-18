@@ -85,13 +85,20 @@ class getter():
             
             if res.json()['code'] == '118':
                 print('Auto captha solever not work!')
+        
+        elif res.json()['code'] =='200':
+            if '대기' in res.json()['msg']:
+                print(name, '대기')
+            else:
+                print(name, '수강신청 성공')
+        else:
+            print(res.json())
     
     def main(self):
         subjectlist = []
         namelist = []
         res = self.s.get(self.url+'skku/login?attribute=login')
         self.token = self.login()
-        
         if self.is_netfunnel:
             self.updatenetfunnel()
         
@@ -153,8 +160,7 @@ def main():
 
 
     ###################################################
-    # Edit here #
-    
+
     id = ''
     pw = ''
 
@@ -162,8 +168,6 @@ def main():
 
     g = getter(id, pw, args.debug, args.netfunnel)
     if args.main == True:
-        print('main mode')
-        exit()
         g.main()
     else:
         g.jubjub()
