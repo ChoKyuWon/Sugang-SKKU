@@ -7,6 +7,7 @@ from datetime import datetime
 import os
 import argparse
 
+TIME = 1.2
 
 class getter():
     def __init__(self,id,pw, debug=False, netfunnel=False):
@@ -112,6 +113,7 @@ class getter():
             if self.is_netfunnel:
                 self.updatenetfunnel()
             self.sugang(sub, name)
+            sleep(TIME)
             if self.is_netfunnel:
                 if not self.closenetfunnel():
                     print('Fail to close netfunnel')
@@ -141,23 +143,30 @@ class getter():
 
 def main():
     parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--main", help="main sugang mode", nargs='?', const=True, type=bool)
     parser.add_argument("--debug", help="debug on", nargs='?', const=True, type=bool)
     parser.add_argument("--netfunnel", help="netfunnel on", nargs='?', const=True, type=bool)
     args = parser.parse_args()
 
     os.system('cls')
-    print('수강신청 자동화 도구... v0.2\n')
-    id = input('Input yout ID: ')
-    pw = input('input your PW: ')
+    print('수강신청 자동화 도구... v0.3\n')
+
+
+    ###################################################
+    # Edit here #
     
-    mode = int(input('select mode(1:main, 2:jubjub):'))
+    id = ''
+    pw = ''
+
+    ###################################################
+
     g = getter(id, pw, args.debug, args.netfunnel)
-    if mode == 1:
+    if args.main == True:
+        print('main mode')
+        exit()
         g.main()
-    elif mode == 2:
-        g.jubjub()
     else:
-        print('Wrong mode!')
+        g.jubjub()
 
 if __name__ == '__main__':
     main()
