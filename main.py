@@ -74,8 +74,7 @@ class getter():
             print(res.json())
         
         if res.json()['code'] =='99':
-            print(name, res.json()['msg'])
-            sleep(0.5)
+            pass
         
         elif res.json()['code'] =='118':
             #captha solver - auto!
@@ -92,8 +91,9 @@ class getter():
             else:
                 print(name, '수강신청 성공')
         else:
-            print(res.json())
-    
+            pass
+            # print(res.json())
+
     def main(self):
         subjectlist = []
         namelist = []
@@ -129,11 +129,14 @@ class getter():
     def jubjub(self):
         res = self.s.get(self.url+'skku/login?attribute=login')
         self.token = self.login()
+        consume_time = 0
 
         while True:
             if self.is_netfunnel:
                 self.updatenetfunnel()
+            
             rawdata = self.getdata()
+
             if self.is_netfunnel:
                 if self.closenetfunnel() is False:
                     print('Fail to close netfunnel')
@@ -142,11 +145,11 @@ class getter():
             for each in rawdata['rows']:
                 if int(each['tot_dhw'].split('/')[0].strip()) < int(each['tot_dhw'].split('/')[1].strip()):
                     self.sugang(each['haksu_no']+'@'+each['bunban']+'@0@N', each['gyogwamok_nm'])
-                    break
                 else:
-                    print(each['gyogwamok_nm'],each['tot_dhw'].split('/')[0].strip() ,'/',each['tot_dhw'].split('/')[1].strip(), end=' ')
-            sleep(0.1)
-    
+                    print(each['gyogwamok_nm'],each['tot_dhw'].split('/')[0].strip() ,'/',each['tot_dhw'].split('/')[1].strip(), consume_time, 's')
+            sleep(5)
+            consume_time += 5
+     
 
 def main():
     parser = argparse.ArgumentParser()
